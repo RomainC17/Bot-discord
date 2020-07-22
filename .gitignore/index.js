@@ -35,4 +35,4 @@ bot.on('message', function (message){
 /*     EXPULSER UN MEMBRE      */
 
 
-bot.login(''); // TOKEN DU BOT
+bot.login('NzM1MTQwOTQxMTMxNjc3ODI3.Xxb8fw.71cYhJcL37Vl_iQA_VMUawUAQ00'); // TOKEN DU BOT
