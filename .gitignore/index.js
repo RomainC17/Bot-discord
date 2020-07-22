@@ -16,7 +16,7 @@ bot.on('message', function (message){
       message.reply('OK c\'est bon pour moi !');
     }
     if (message.content === 'GREtatB') { //Statut du bot
-      message.reply('BOT en cours de maintenance');
+      message.reply('BOT opérationnel');
     }
     if (message.content === 'GRNomS') { //Affiche le nom du serveur
       message.channel.send('Le nom du serveur actuel est  : ' + message.guild.name);
