@@ -16,7 +16,7 @@ bot.on('message', function (message){
       message.reply('OK c\'est bon pour moi !');
     }
     if (message.content === 'GREtatB') { //Statut du bot
-      message.reply('BOT opérationnel');
+      message.reply('BOT opérationnel !');
     }
     if (message.content === 'GRNomS') { //Affiche le nom du serveur
       message.channel.send('Le nom du serveur actuel est  : ' + message.guild.name);
@@ -32,17 +32,22 @@ bot.on('message', function (message){
     }
     if (message.content === 'GRTcheaze') { //FUN
       message.reply('Tcheaze à juste été littéralement plus de fois absent en PPE que casper ');
+      message.react('👻')
     }
     if (message.content === 'GRNathanG') { //FUN
       message.reply('De toute évidence,NathanG est un bg');
+      message.react('🥵');
+      message.react('🔥');
+      message.react('💯');
     }
     if (message.content === 'GRGofi') { //FUN
       message.reply('OOOOHHH LUUUUUIIIII');
+      message.react('😆');
     }
     if (message.content === 'GRHelp') { //HELP DE TOUTES LES COMMANDES
-      message.reply('\n```diff\n' + 
-      '-Utilise le préfixe : GR puis à la suite le nom de ta commande :' +
-      '\n```\n' + 
+      message.reply('\n \n' + 
+      '__**Utilise le préfixe : GR puis à la suite le nom de ta commande :**__' +
+      '\n \n' + 
       '__Commandes à propos **DU BOT** :__ ' +
       '\n \n' +
       '*-TestB* : Le bot doit te répondre (si c\'est pas le cas, c\'est la douille).' + 
