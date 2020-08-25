@@ -70,9 +70,11 @@ bot.on('message', function (message){
       '\n \n' +
       '__Commandes à propos **DU SERVEUR** :__' + 
       '\n \n' +
-      '*-NomS* : Donne le nom du serveur actuel.' + 
-      '\n' + 
+      '*-Clear* + nombre : Supprime le nombre de message que vous souhaitez dans le channel.' + 
+      '\n' +
       '*-MembreS* : Donne le nombre de personnes sur le serveur.' +
+      '\n' + 
+      '*-NomS* : Donne le nom du serveur actuel.' + 
       '\n \n' +
       '__Commandes à propos **DE TOI** :__' + 
       '\n \n' +
@@ -92,9 +94,9 @@ bot.on('message', function (message){
 
 const ytdl = require("ytdl-core");
 const queue = new Map();
-
 bot.on("message", async message => {
   let commande = message.content.trim().split(" ")[0].slice(1)
+  let args = message.content.trim().split(" ").slice(1);
   if (message.author.bot) return;
 
   const serverQueue = queue.get(message.guild.id);
@@ -114,6 +116,18 @@ bot.on("message", async message => {
       pause(message, serverQueue);
       return;
   }
+  else if (message.content.startsWith(`GClear`)) {
+    if (!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send("Vous n'avez pas les permissions");
+    if (!args[0]) return message.channel.send("Vous devez mettre un nombre de messages à supprimer");
+    //if (isNan(args[0])) return message.channel.send("Le nombre de message est invalide");
+    if (parseInt(args[0]) <= 0 || parseInt(args[0]) >= 99) return message.channel.send("Le nombre de messages à supprimer doit être compris entre 1 et 99.")
+    message.channel.bulkDelete(parseInt(args[0]) + 1)
+    message.channel.send(`Vous bien supprimé le nombre de message(s) demandé`).then(msg => {
+        setTimeout(() => {
+            msg.delete()
+        }, 5000);
+    });
+}
 });
 
 
@@ -122,7 +136,7 @@ async function execute(message, serverQueue) {
   const voiceChannel = message.member.voice.channel;
   if (!voiceChannel)
       return message.channel.send(
-          "Tu dois être connecté pour jouer une musique !"
+          "Tu dois être connecté à un salon vocal pour jouer une musique !"
       );
   const permissions = voiceChannel.permissionsFor(message.client.user);
   if (!permissions.has("CONNECT") || !permissions.has("SPEAK")) {
@@ -166,7 +180,7 @@ async function execute(message, serverQueue) {
   }
 }
 
-function skip(message, serverQueue, args) {
+function skip(message, serverQueue) {
   if (!message.member.voice.channel)
       return message.channel.send(
           "Tu dois être connecté au salon pour skip la musique !"
@@ -185,7 +199,7 @@ function stop(message, serverQueue) {
   serverQueue.connection.dispatcher.end();
 }
 
-function pause(message, serverQueue, args) {
+function pause(message, serverQueue) {
   if (!message.member.voice.channel)
       return message.channel.send(
           "Tu dois être connecté au salon pour mettre en pause la musique !"
