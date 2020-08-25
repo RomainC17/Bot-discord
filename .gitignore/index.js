@@ -1,52 +1,56 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 
-/*     STATUT DU BOT      */
+  /*****************************************
+  ************ STATUT DU BOT ***************
+  ******************************************/
 bot.on('ready', function (){
-    bot.user.setActivity('GRHelp - By Griffon#4905'); // Son activité
+    bot.user.setActivity('GHelp - By Griffon#4905'); // Son activité
     bot.user.setUsername('Griffon - BOT'); // Son nom qui s'affiche
 })
 
 
 
-/*     RÉACTION AUX COMMANDES      */
+  /*****************************************
+  ******* RÉACTIIONS AUX COMMANDES *********
+  ******************************************/
 bot.on('message', function (message){
 
-    if (message.content === 'GRTestB') { //Test
+    if (message.content === 'GTestB') { //Test
       message.reply('OK c\'est bon pour moi !');
     }
-    if (message.content === 'GREtatB') { //Statut du bot
+    if (message.content === 'GEtatB') { //Statut du bot
       message.reply('BOT opérationnel');
     }
-    if (message.content === 'GRNomS') { //Affiche le nom du serveur
+    if (message.content === 'GNomS') { //Affiche le nom du serveur
       message.channel.send('Le nom du serveur actuel est  : ' + message.guild.name);
     }
-    if (message.content === 'GRMembreS') { //Donne le nombre de membres sur le serveur
+    if (message.content === 'GMembreS') { //Donne le nombre de membres sur le serveur
       message.channel.send('Nombre total de personnes sur le serveur : ' + message.guild.memberCount + ' (toi y compris)');
     }
-    if (message.content === 'GRInfosT') { //Donne les infos de l'utilisateur
+    if (message.content === 'GInfosT') { //Donne les infos de l'utilisateur
       message.channel.send('Ton pseudo : ' + message.author.username);
       message.channel.send('Ton tag : ' + message.author.discriminator);
       message.channel.send('Ta date de création de compte : ' + message.author.createdAt);      
       message.channel.send('Ton identifiant : ' + message.author.id);
     }
-    if (message.content === 'GRTcheaze') { //FUN
+    if (message.content === 'GTcheaze') { //FUN
       message.reply('Tcheaze à juste été littéralement plus de fois absent en PPE que casper ');
       message.react('👻')
     }
-    if (message.content === 'GRNathanG') { //FUN
+    if (message.content === 'GNathanG') { //FUN
       message.reply('De toute évidence,NathanG est un bg');
       message.react('🥵');
       message.react('🔥');
       message.react('💯');
     }
-    if (message.content === 'GRGofi') { //FUN
+    if (message.content === 'GGofi') { //FUN
       message.reply('OOOOHHH LUUUUUIIIII');
       message.react('😆');
     }
-    if (message.content === 'GRHelp') { //HELP DE TOUTES LES COMMANDES
+    if (message.content === 'GHelp') { //HELP DE TOUTES LES COMMANDES
       message.reply('\n \n' + 
-      '__**Utilise le préfixe : GR puis à la suite le nom de ta commande :**__' +
+      '__**Utilise le préfixe : G puis à la suite le nom de ta commande :**__' +
       '\n \n' + 
       '__Commandes à propos **DU BOT** :__ ' +
       '\n \n' +
@@ -81,30 +85,32 @@ bot.on('message', function (message){
   }
 });
 
-const fetch = require('node-fetch');
+
+  /*****************************************
+  ************ COMMANDE MUSIQUE ************
+  ******************************************/
+
 const ytdl = require("ytdl-core");
 const queue = new Map();
 
 bot.on("message", async message => {
   let commande = message.content.trim().split(" ")[0].slice(1)
   if (message.author.bot) return;
-  /*****************************************
-  ************ COMMANDE MUSIQUE ***********
-  ******************************************/
+
   const serverQueue = queue.get(message.guild.id);
-  if (message.content.startsWith(`GRPlay`)) {
+  if (message.content.startsWith(`GPlay`)) { //COMMANDE PLAY  
       execute(message, serverQueue);
       return;
   } 
-  else if (message.content.startsWith(`GRSkip`)) {
+  else if (message.content.startsWith(`GSkip`)) { //COMMANDE SKIP
       skip(message, serverQueue);
       return;
   } 
-  else if (message.content.startsWith(`GRStop`)) {
+  else if (message.content.startsWith(`GStop`)) { //COMMANDE STOP
       stop(message, serverQueue);
       return;
   } 
-  else if (message.content.startsWith(`GRPause`)) {
+  else if (message.content.startsWith(`GPause`)) { //COMMANDE PAUSE
       pause(message, serverQueue);
       return;
   }
@@ -116,12 +122,12 @@ async function execute(message, serverQueue) {
   const voiceChannel = message.member.voice.channel;
   if (!voiceChannel)
       return message.channel.send(
-          "You need to be in a voice channel to play music!"
+          "Tu dois être connecté pour jouer une musique !"
       );
   const permissions = voiceChannel.permissionsFor(message.client.user);
   if (!permissions.has("CONNECT") || !permissions.has("SPEAK")) {
       return message.channel.send(
-          "I need the permissions to join and speak in your voice channel!"
+          "J'ai besoin d'avoir la permission de rejoindre et de parler dans le salon !"
       );
   }
 
@@ -156,7 +162,7 @@ async function execute(message, serverQueue) {
       }
   } else {
       serverQueue.songs.push(song);
-      return message.channel.send(`${song.title} has been added to the queue!`);
+      return message.channel.send(`${song.title} a été ajouté à la liste en cours !`);
   }
 }
 
@@ -166,8 +172,8 @@ function skip(message, serverQueue, args) {
           "Tu dois être connecté au salon pour skip la musique !"
       );
   if (!serverQueue)
-      return message.channel.send("There is no song that I could skip!");
-  serverQueue.connection.dispatcher.end();
+      return message.channel.send("Il n'y a pas de chanson à skip !");
+  //serverQueue.connection.dispatcher.end();
 }
 
 function stop(message, serverQueue) {
