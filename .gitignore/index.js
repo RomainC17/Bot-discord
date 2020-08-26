@@ -68,9 +68,11 @@ bot.on('message', function (message){
       '\n' +
       '*-Stop* : Arrête la musique et déconnecte le bot.' +
       '\n \n' +
-      '__Commandes à propos **DU SERVEUR** :__' + 
+      '__Commandes à propos **DU SERVEUR** ET DE **LA MODÉRATION** :__' + 
       '\n \n' +
       '*-Clear* + nombre : Supprime le nombre de message que vous souhaitez dans le channel.' + 
+      '\n' +
+      '*-Ban* + *utilisateur* + *temps (sec)* + *raison* : Bannis un membre du serveur pendant un certain temps.' +
       '\n' +
       '*-MembreS* : Donne le nombre de personnes sur le serveur.' +
       '\n' + 
@@ -89,7 +91,7 @@ bot.on('message', function (message){
 
 
   /*****************************************
-  ************ COMMANDE MUSIQUE ************
+  ************ COMMANDES MUSIQUES ET BAN ************
   ******************************************/
 
 const ytdl = require("ytdl-core");
@@ -127,9 +129,56 @@ bot.on("message", async message => {
             msg.delete()
         }, 5000);
     });
+  }
+  else if (message.content.startsWith(`GBan`)) {
+    if (message.member.hasPermission('BAN_MEMBERS')) {
+      //GBan @qqn 123 test
+
+    let arg = message.content.trim().split(/ +/g)
+    
+    utilisateur = message.mentions.members.first();
+    temps = arg[2];
+    raison = arg[3];
+
+    if (!utilisateur) {
+      return message.channel.send('Vous devez mentionner un utilisateur !');
+    }
+    else {
+      if (!temps || isNaN(temps)) {
+        return message.channel.send('Vous devez indiquer un temps de ban en secondes !');
+      } else {
+        if (!raison) {
+          return message.channel.send('Vous devez indiquer la raison du ban !');
+        } else {
+          // on fait le tempban
+          message.guild.members.ban(utilisateur.id);
+          setTimeout(function () {
+            message.guild.members.unban(utilisateur.id);
+          }, temps *1000)
+        }
+      }
+    }
+
+
+  } else {
+    return message.channel.send('Tu ne peut pas ban un membre car tu n\'a pas la permission ! ')
+  }
+
 }
+
+  /*****************************************
+  ******** MESSAGE DE BIENVENUE ************
+  ******************************************/
+//Pas op
+bot.on("guildMemberAdd", member => {
+  bot.channels.cache.get('720888577256325164').send(`Bienvenue sur le serveur ${member} !`);
+})
 });
 
+
+  /*****************************************
+  ******** FONCTIONS UTILISABLES ***********
+  ******************************************/
 
 async function execute(message, serverQueue) {
   const args = message.content.split(" ");
