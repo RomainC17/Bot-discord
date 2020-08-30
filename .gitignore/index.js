@@ -58,7 +58,7 @@ bot.on('message', function (message){
       '\n' + 
       '*-EtatB* : Informe sur l\'état du bot.' + 
       '\n \n' +
-      '__Commandes à propos **DE LA MUSIQUE** :__' + 
+    /*  '__Commandes à propos **DE LA MUSIQUE** :__' + 
       '\n \n' +
       '*-Play* + url : Joue le titre demandé.' + 
       '\n' + 
@@ -67,9 +67,11 @@ bot.on('message', function (message){
       '*-Skip* : Saute le titre joué pour passer au suivant.' +
       '\n' +
       '*-Stop* : Arrête la musique et déconnecte le bot.' +
-      '\n \n' +
+      '\n \n' + */
       '__Commandes à propos **DU SERVEUR** ET DE **LA MODÉRATION** :__' + 
       '\n \n' +
+      '*-GTicket* : Ouvre un ticket d\'assistance pour contacter un modérateur du serveur. ' + 
+      '\n' +
       '*-Clear* + nombre : Supprime le nombre de message que vous souhaitez dans le channel.' + 
       '\n' +
       '*-Ban* + *utilisateur* + *temps (sec)* + *raison* : Bannis un membre du serveur pendant un certain temps.' +
@@ -89,9 +91,46 @@ bot.on('message', function (message){
   }
 });
 
+  /*****************************************
+  ***** SYSTEME DE TICKET D'ASSISTANCE *****
+  ******************************************/
+
+bot.on('message', message => {
+  var user = message.user
+  const ticket = new Discord.MessageEmbed()
+  .setColor('#FF9B00')
+  .setThumbnail(message.author.displayAvatarURL())
+    .setTitle('Ticket 🎫') 
+  .addFields(
+    { name: 'Bonjour' , value: `Le staff sera bientot à vous.`},
+    //{ name: '\u200B', value: '\u200B' },
+    { name: '🔒 Pour fermer le ticket,', value: 'contactez un administrateur.'},
+    )
+  .setDescription(`Ticket de ${message.author}`)
+    .setTimestamp()
+    .setFooter('Développé par Griffon #4905');
+
+  if(message.content === `GTicket`) {
+    message.delete();
+    message.guild.channels.create('ticket  ' + message.member.user.username,)
+    .then((chan)=>{
+chan.updateOverwrite(message.guild.roles.everyone, {
+    SEND_MESSAGES: false,
+    VIEW_CHANNEL: false,
+})
+chan.updateOverwrite(message.author.id ,{ 
+    SEND_MESSAGES: true,
+    VIEW_CHANNEL: true,
+})
+
+message.channel.send(`Votre ticket a bien été ouvert <@!`+ message.author +`> ! 🔓`);
+chan.send(ticket)
+})
+}
+})
 
   /*****************************************
-  ************ COMMANDES MUSIQUES ET BAN ************
+  ******* COMMANDES MUSIQUES ET BAN ********
   ******************************************/
 
 const ytdl = require("ytdl-core");
@@ -163,7 +202,7 @@ bot.on("message", async message => {
   } else {
     return message.channel.send('Tu ne peut pas ban un membre car tu n\'a pas la permission ! ')
   }
-
+ 
 }
 
   /*****************************************
@@ -279,9 +318,6 @@ function play(guild, song) {
     dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
     serverQueue.textChannel.send(`Son joué : **${song.title}**`);
 }
-
-
-
 
 
 
