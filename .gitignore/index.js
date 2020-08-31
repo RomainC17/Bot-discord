@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
+const moment = require('moment');
 
   /*****************************************
   ************ STATUT DU BOT ***************
@@ -25,15 +26,66 @@ bot.on('message', function (message){
     if (message.content === 'GNomS') { //Affiche le nom du serveur
       message.channel.send('Le nom du serveur actuel est  : ' + message.guild.name);
     }
-    if (message.content === 'GMembreS') { //Donne le nombre de membres sur le serveur
-      message.channel.send('Nombre total de personnes sur le serveur : ' + message.guild.memberCount + ' (toi y compris)');
+    if (message.content.startsWith("GInfos")) { //Donne les infos de l'utilisateur
+      if (message.mentions.users.first()) {
+        user = message.mentions.users.first();
+      }  else {
+        user = message.author;
+      }
+
+      const member = message.guild.member(user);
+      const embed = new Discord.MessageEmbed()
+      .setColor('#ff5555')
+      .setThumbnail(user.avatarURL)
+      .setTitle(`Informations sur ${user.username}#${user.discriminator} : `)
+      .addField('ID du compte : ', `${user.id}`, true)
+      .addField('Pseudo sur le serveur : ', `${member.nickname !== null ? `${member.nickname}` :'Aucun' }`, true)
+      .addField('A crée son compte le : ', `${moment.utc(user.createdAt).format('dddd, MMMM Do YYYY, HH:mm:ss')}`, true)
+      .addField('A rejoint le serveur le : ', `${moment.utc(member.joinedAt).format('dddd, MMMM Do YYYY, HH:mm:ss')}`, true)
+      .addField('Status : ', `${user.presence.status}`, true)
+      //.addField('Joue a :', `${user.presence.game ? user.presence.game.name : 'Rien'}`, true)
+      .addField('Rôle(s) :', member.roles.cache.map(roles => `${roles.name}`).join(', '), true)
+      .addField('En réponse à : ', `${message.author.username}#${message.author.discriminator}`)
+      message.channel.send(embed).then(message => message.delete({ timeout : 59000 }));
     }
-    if (message.content === 'GInfosT') { //Donne les infos de l'utilisateur
-      message.channel.send('Ton pseudo : ' + message.author.username);
-      message.channel.send('Ton tag : ' + message.author.discriminator);
-      message.channel.send('Ta date de création de compte : ' + message.author.createdAt);      
-      message.channel.send('Ton identifiant : ' + message.author.id);
-    }
+    if (message.content.startsWith("GStats")) { //DONNE LES STATS DU SERVEUR
+      let onlines = message.guild.members.cache.filter(({
+          presence
+      }) => presence.status !== 'offline').size;
+      let totalmembers = message.guild.members.cache.size;
+      let totalservers = bot.guilds.cache.size;
+      let totalbots = message.guild.members.cache.filter(member => member.user.bot).size;
+
+      const EmbedStats = new Discord.MessageEmbed()
+          .setColor('#0099ff')
+          .setTitle('Statistiques')
+          //.setURL('https://discord.js.org/')
+          .setAuthor('Griffon - BOT')
+          .setDescription('Voici les statistiques du serveur')
+          //.setThumbnail('https://i.imgur.com/wSTFkRM.png')
+          .addFields({
+              name: 'Nombre de membres au total :',
+              value: totalmembers,
+              inline: true
+          }, {
+              name: 'Membres connectés : ',
+              value: onlines,
+              inline: true
+          }, {
+              name: 'Nombre de serveurs auquel le bot appartient : ',
+              value: totalservers,
+              inline: true
+          }, {
+              name: 'Nombres de bots sur le serveur : ',
+              value: totalbots,
+              inline: true
+          },)
+          .setTimestamp()
+          .setFooter('Griffon - BOT');
+
+      message.channel.send(EmbedStats);
+  }
+
     if (message.content === 'GTcheaze') { //FUN
       message.reply('Tcheaze à juste été littéralement plus de fois absent en PPE que casper ');
       message.react('👻')
@@ -49,6 +101,7 @@ bot.on('message', function (message){
       message.react('😆');
     }
     if (message.content === 'GHelp') { //HELP DE TOUTES LES COMMANDES
+      if (message.member.hasPermission('MANAGE_MESSAGES')){
       message.reply('\n \n' + 
       '__**Utilise le préfixe : G puis à la suite le nom de ta commande :**__' +
       '\n \n' + 
@@ -76,19 +129,59 @@ bot.on('message', function (message){
       '\n' +
       '*-Ban* + *utilisateur* + *temps (sec)* + *raison* : Bannis un membre du serveur pendant un certain temps.' +
       '\n' +
-      '*-MembreS* : Donne le nombre de personnes sur le serveur.' +
+      '*-Stats* : Donne des infos au sujet du serveur (nombre de membres, membres connectés...).' +
       '\n' + 
       '*-NomS* : Donne le nom du serveur actuel.' + 
       '\n \n' +
-      '__Commandes à propos **DE TOI** :__' + 
+      '__Commandes à propos **D\'UN MEMBRE** :__' + 
       '\n \n' +
-      '*-InfosT* : Donne ton réel pseudo, ton tag, ta date de création de ton compte, ton id. ' +
+      '*-Infos* + *@MentionUtilisateur* : Donne des infos au sujet d\'un membre par un message éphémère (59 secondes). ' +
       '\n \n' + 
       '__Commandes pour le **FUN** :__' +
       '\n \n' +
       '*-Tcheaze* / *NathanG* / *Gofi* : Surprise :)' + 
       '');
+    }
   }
+  if (message.content === 'GHelp') { //HELP DE TOUTES LES COMMANDES
+    if (!message.member.hasPermission('MANAGE_MESSAGES')){
+    message.reply('\n \n' + 
+    '__**Utilise le préfixe : G puis à la suite le nom de ta commande :**__' +
+    '\n \n' + 
+    '__Commandes à propos **DU BOT** :__ ' +
+    '\n \n' +
+    '*-TestB* : Le bot doit te répondre (si c\'est pas le cas, c\'est la douille).' + 
+    '\n' + 
+    '*-EtatB* : Informe sur l\'état du bot.' + 
+    '\n \n' +
+  /*  '__Commandes à propos **DE LA MUSIQUE** :__' + 
+    '\n \n' +
+    '*-Play* + url : Joue le titre demandé.' + 
+    '\n' + 
+    '*-Pause* : Met en pause la musique / Reprends la lecture.' +
+    '\n' +
+    '*-Skip* : Saute le titre joué pour passer au suivant.' +
+    '\n' +
+    '*-Stop* : Arrête la musique et déconnecte le bot.' +
+    '\n \n' + */
+    '__Commandes à propos **DU SERVEUR** :__' + 
+    '\n \n' +
+    '*-GTicket* : Ouvre un ticket d\'assistance pour contacter un modérateur du serveur. ' + 
+    '\n' +
+    '*-Stats* : Donne des infos au sujet du serveur (nombre de membres, membres connectés...).' +
+    '\n' + 
+    '*-NomS* : Donne le nom du serveur actuel.' + 
+    '\n \n' +
+    '__Commandes à propos **D\'UN MEMBRE** :__' + 
+      '\n \n' +
+      '*-Infos* + *@MentionUtilisateur* : Donne des infos au sujet d\'un membre par un message éphémère (59 secondes). ' +
+    '\n \n' + 
+    '__Commandes pour le **FUN** :__' +
+    '\n \n' +
+    '*-Tcheaze* / *NathanG* / *Gofi* : Surprise :)' + 
+    '');
+  }
+}
 });
 
   /*****************************************
