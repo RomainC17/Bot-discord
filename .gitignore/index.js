@@ -26,7 +26,7 @@ bot.on('message', function (message){
     if (message.content === 'GNomS') { //Affiche le nom du serveur
       message.channel.send('Le nom du serveur actuel est  : ' + message.guild.name);
     }
-    if (message.content.startsWith("GInfos")) { //Donne les infos de l'utilisateur
+    if (message.content.startsWith("GInfos") || message.content.startsWith("Ginfos")) { //Donne les infos de l'utilisateur
       if (message.mentions.users.first()) {
         user = message.mentions.users.first();
       }  else {
@@ -46,7 +46,7 @@ bot.on('message', function (message){
       //.addField('Joue a :', `${user.presence.game ? user.presence.game.name : 'Rien'}`, true)
       .addField('Rôle(s) :', member.roles.cache.map(roles => `${roles.name}`).join(', '), true)
       .addField('En réponse à : ', `${message.author.username}#${message.author.discriminator}`)
-      message.channel.send(embed).then(message => message.delete({ timeout : 59000 }));
+      message.channel.send(embed).then(message => message.delete({ timeout : 900000 }));
     }
     if (message.content.startsWith("GStats")) { //DONNE LES STATS DU SERVEUR
       let onlines = message.guild.members.cache.filter(({
@@ -90,16 +90,22 @@ bot.on('message', function (message){
       message.reply('Tcheaze à juste été littéralement plus de fois absent en PPE que casper ');
       message.react('👻')
     }
+
+
     if (message.content === 'GNathanG') { //FUN
       message.reply('De toute évidence,NathanG est un bg');
       message.react('🥵');
       message.react('🔥');
       message.react('💯');
     }
+
+
     if (message.content === 'GGofi') { //FUN
       message.reply('OOOOHHH LUUUUUIIIII');
       message.react('😆');
     }
+
+
     if (message.content === 'GHelp') { //HELP DE TOUTES LES COMMANDES
       if (message.member.hasPermission('MANAGE_MESSAGES')){
       message.reply('\n \n' + 
@@ -135,7 +141,7 @@ bot.on('message', function (message){
       '\n \n' +
       '__Commandes à propos **D\'UN MEMBRE** :__' + 
       '\n \n' +
-      '*-Infos* + *@MentionUtilisateur* : Donne des infos au sujet d\'un membre par un message éphémère (59 secondes). ' +
+      '*-Infos* + *@MentionUtilisateur* : Donne des infos au sujet d\'un membre par un message éphémère (15 minutes). ' +
       '\n \n' + 
       '__Commandes pour le **FUN** :__' +
       '\n \n' +
@@ -143,6 +149,8 @@ bot.on('message', function (message){
       '');
     }
   }
+
+
   if (message.content === 'GHelp') { //HELP DE TOUTES LES COMMANDES
     if (!message.member.hasPermission('MANAGE_MESSAGES')){
     message.reply('\n \n' + 
@@ -174,7 +182,7 @@ bot.on('message', function (message){
     '\n \n' +
     '__Commandes à propos **D\'UN MEMBRE** :__' + 
       '\n \n' +
-      '*-Infos* + *@MentionUtilisateur* : Donne des infos au sujet d\'un membre par un message éphémère (59 secondes). ' +
+      '*-Infos* + *@MentionUtilisateur* : Donne des infos au sujet d\'un membre par un message éphémère (15 minutes). ' +
     '\n \n' + 
     '__Commandes pour le **FUN** :__' +
     '\n \n' +
@@ -222,35 +230,14 @@ chan.send(ticket)
 }
 })
 
+
   /*****************************************
-  ******* COMMANDES MUSIQUES ET BAN ********
+  *********** COMMANDE DE CLEAR  ***********
   ******************************************/
 
-const ytdl = require("ytdl-core");
-const queue = new Map();
 bot.on("message", async message => {
-  let commande = message.content.trim().split(" ")[0].slice(1)
   let args = message.content.trim().split(" ").slice(1);
-  if (message.author.bot) return;
-
-  const serverQueue = queue.get(message.guild.id);
-  if (message.content.startsWith(`GPlay`)) { //COMMANDE PLAY  
-      execute(message, serverQueue);
-      return;
-  } 
-  else if (message.content.startsWith(`GSkip`)) { //COMMANDE SKIP
-      skip(message, serverQueue);
-      return;
-  } 
-  else if (message.content.startsWith(`GStop`)) { //COMMANDE STOP
-      stop(message, serverQueue);
-      return;
-  } 
-  else if (message.content.startsWith(`GPause`)) { //COMMANDE PAUSE
-      pause(message, serverQueue);
-      return;
-  }
-  else if (message.content.startsWith(`GClear`)) {
+    if (message.content.startsWith(`GClear`)) {
     if (!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send("Vous n'avez pas les permissions");
     if (!args[0]) return message.channel.send("Vous devez mettre un nombre de messages à supprimer");
     //if (isNan(args[0])) return message.channel.send("Le nombre de message est invalide");
@@ -262,7 +249,15 @@ bot.on("message", async message => {
         }, 5000);
     });
   }
-  else if (message.content.startsWith(`GBan`)) {
+});
+
+
+  /*****************************************
+  ************ COMMANDE DE BAN  ************
+  ******************************************/
+
+bot.on("message", async message => {
+  if (message.content.startsWith(`GBan`)) {
     if (message.member.hasPermission('BAN_MEMBERS')) {
       //GBan @qqn 123 test
 
@@ -295,16 +290,43 @@ bot.on("message", async message => {
   } else {
     return message.channel.send('Tu ne peut pas ban un membre car tu n\'a pas la permission ! ')
   }
- 
-}
+  }
+});
+
 
   /*****************************************
-  ******** MESSAGE DE BIENVENUE ************
+  *********** COMMANDES MUSIQUES ***********
   ******************************************/
-//Pas op
-bot.on("guildMemberAdd", member => {
-  bot.channels.cache.get('720888577256325164').send(`Bienvenue sur le serveur ${member} !`);
-})
+
+const ytdl = require("ytdl-core");
+const queue = new Map();
+bot.on("message", async message => {
+  let commande = message.content.trim().split(" ")[0].slice(1)
+  if (message.author.bot) return;
+
+  const serverQueue = queue.get(message.guild.id);
+  if (message.content.startsWith(`GPlay`)) { //COMMANDE PLAY  
+      execute(message, serverQueue);
+      return;
+  } 
+
+
+  else if (message.content.startsWith(`GSkip`)) { //COMMANDE SKIP
+      skip(message, serverQueue);
+      return;
+  } 
+
+
+  else if (message.content.startsWith(`GStop`)) { //COMMANDE STOP
+      stop(message, serverQueue);
+      return;
+  } 
+
+
+  else if (message.content.startsWith(`GPause`)) { //COMMANDE PAUSE
+      pause(message, serverQueue);
+      return;
+  }
 });
 
 
@@ -371,6 +393,7 @@ function skip(message, serverQueue) {
   //serverQueue.connection.dispatcher.end();
 }
 
+
 function stop(message, serverQueue) {
   if (!message.member.voice.channel)
       return message.channel.send(
@@ -379,6 +402,7 @@ function stop(message, serverQueue) {
   serverQueue.songs = [];
   serverQueue.connection.dispatcher.end();
 }
+
 
 function pause(message, serverQueue) {
   if (!message.member.voice.channel)
@@ -392,6 +416,7 @@ function pause(message, serverQueue) {
       serverQueue.connection.dispatcher.pause();
   }
 }
+
 
 function play(guild, song) {
   const serverQueue = queue.get(guild.id);
