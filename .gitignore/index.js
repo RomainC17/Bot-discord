@@ -1,13 +1,15 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 const moment = require('moment');
+const token = require("./token.json");
 
   /*****************************************
   ************ STATUT DU BOT ***************
   ******************************************/
 
-bot.on('ready', function (){
-    bot.user.setActivity('GHelp - By Griffon#4905'); // Son activité
+bot.on("ready", async () => {
+    console.log("Le bot est allumé")
+    bot.user.setActivity('GHelp - By Griffon#9999'); // Son activité, anciennement #4905
     bot.user.setUsername('Griffon - BOT'); // Son nom qui s'affiche
 })
 
@@ -19,11 +21,11 @@ bot.on('ready', function (){
 bot.on('message', function (message){
 
   if (message.content.startsWith("GTest") || message.content.startsWith("Gtest")) { //Test
-    message.reply('OK c\'est bon pour moi !');
+    message.channel.send('OK c\'est bon pour moi !');
   }
 
   if (message.content.startsWith("GEtatB") || message.content.startsWith("GetatB") || message.content.startsWith("Getatb") || message.content.startsWith("GEtatb")) { //Statut du bot
-    message.reply('Je suis opérationnel :-)');
+    message.channel.send('Je suis opérationnel :-)');
   }
   
   if (message.content.startsWith("GNomS") || message.content.startsWith("GnomS") || message.content.startsWith("Gnoms") || message.content.startsWith("gNoms")) { //Affiche le nom du serveur
@@ -54,50 +56,48 @@ bot.on('message', function (message){
   }
 
   if (message.content.startsWith("GStats") || message.content.startsWith("Gstats")) { //DONNE LES STATS DU SERVEUR
-    let onlines = message.guild.members.cache.filter(({
-        presence
-    }) => presence.status !== 'offline').size;
-    let totalmembers = message.guild.members.cache.size;
-    let totalservers = bot.guilds.cache.size;
-    let totalbots = message.guild.members.cache.filter(member => member.user.bot).size;
+      let onlines = message.guild.members.cache.filter(({
+          presence
+      }) => presence.status !== 'offline').size;
+      let totalmembers = message.guild.members.cache.size;
+      let totalservers = bot.guilds.cache.size;
+      let totalbots = message.guild.members.cache.filter(member => member.user.bot).size;
 
-    const EmbedStats = new Discord.MessageEmbed()
-    .setColor('#0099ff')
-    .setTitle('Statistiques')
-    //.setURL('https://discord.js.org/')
-    .setAuthor('Griffon - BOT')
-    .setDescription('Voici les statistiques du serveur')
-    //.setThumbnail('https://i.imgur.com/wSTFkRM.png')
-    .addFields({
-      name: 'Nombre de membres au total :',
-      value: totalmembers,
-      inline: true
-    }, {
-      name: 'Membres connectés : ',
-      value: onlines,
-      inline: true
-    }, {
-      name: 'Nombre de serveurs auquel le bot appartient : ',
-      value: totalservers,
-      inline: true
-    }, {
-      name: 'Nombres de bots sur le serveur : ',
-      value: totalbots,
-      inline: true
-    },)
-    .setTimestamp()
-    .setFooter('Griffon - BOT');
-    message.channel.send(EmbedStats);
+      const EmbedStats = new Discord.MessageEmbed()
+          .setColor('#0099ff')
+          .setTitle('Statistiques')
+          .setDescription('Voici les statistiques du serveur')
+          .addFields({
+              name: 'Nombre de membrs total',
+              value: totalmembers,
+              inline: true
+          }, {
+              name: 'Membres connectés : ',
+              value: onlines,
+              inline: true
+          }, {
+              name: 'Nombre de serveurs auquel le bot appartient : ',
+              value: totalservers,
+              inline: true
+          }, {
+              name: 'Nombres de bots sur le serveur : ',
+              value: totalbots,
+              inline: true
+          },)
+
+      message.channel.send(EmbedStats);
   }
 
+  /*********************************************************************************************************************************************************************** */
+
   if (message.content.startsWith("GTcheaze") || message.content.startsWith("Gtcheaze")) { //FUN
-    message.reply('Tcheaze à juste été littéralement plus de fois absent en PPE que casper ');
+    message.channel.send('Tcheaze à juste été littéralement plus de fois absent en PPE que casper ');
     message.react('👻')
   }
 
 
   if (message.content.startsWith("GNathanG") || message.content.startsWith("GNathang") || message.content.startsWith("GnathanG") || message.content.startsWith("Gnathang")) { //FUN
-    message.reply('De toute évidence, NathanG est un bg');
+    message.channel.send('De toute évidence, NathanG est un bg');
     message.react('🥵');
     message.react('🔥');
     message.react('💯');
@@ -105,17 +105,43 @@ bot.on('message', function (message){
 
 
   if (message.content.startsWith("GGofi") || message.content.startsWith("Ggofi")) { //FUN
-    message.reply('OOOOHHH LUUUUUIIIII');
+    message.channel.send('OOOOHHH LUUUUUIIIII');
     message.react('😆');
   }
 
-  if (message.content.startsWith("GAxeeel") || message.content.startsWith("Gaxeeel")) {
-    message.reply('Axeeel se fait boloss par le !8ball');
+  if (message.content.startsWith("GAxeeel") || message.content.startsWith("Gaxeeel") || message.content.startsWith("Gaxel") || message.content.startsWith("GAxel")) {
+    message.channel.send('Axeeel l\'amour de ma vie');
     message.react('💯');
   }
 
-  if (message.content.startsWith("GAckra") || message.content.startsWith("Gackra")) {
-    message.reply('Ackra de morue');
+  if (message.content.startsWith("GFio") || message.content.startsWith("Gfio")) {
+    message.channel.send('Fio c\'est tout simplement le S');
+    message.react('🥵');
+    message.react('🔥');
+    message.react('💯');
+  }
+
+  if (message.content.startsWith("GGriffon") || message.content.startsWith("Ggriffon")) {
+    message.channel.send('"Griffon partout, même dans ton trou');
+  }
+
+  if (message.content.startsWith("GPsgalpha") || message.content.startsWith("Gpsgalpha")) {
+    message.channel.send('Marié avec un bescherelle, ils ont eu ensemble un enfant claquette');
+  }
+
+
+  if (message.content.startsWith("GKeke") || message.content.startsWith("Gkeke")) {
+    message.channel.send('Muet comme une carpe, con comme un glan');
+  }
+
+  if (message.content.startsWith("GLaura") || message.content.startsWith("Glaura")) {
+    message.channel.send('Notre mamie adorée... mais surtout... Ques\'tu veux que j\'fais ?!!');
+    message.react('🥵');
+  }
+
+  if (message.content.startsWith("GTtoki") || message.content.startsWith("Gttoki")) {
+    message.channel.send('Talkie-walkie est demandée à l\'acceuil, sa maman la cherche.');
+    message.react('🥵');
   }
 
   if (message.content.startsWith("GHelp") || message.content.startsWith("Ghelp")) { //HELP DE TOUTES LES COMMANDES
@@ -141,7 +167,7 @@ bot.on('message', function (message){
       '\n \n' + */
       '__Commandes à propos **DU SERVEUR** ET DE **LA MODÉRATION** :__' + 
       '\n \n' +
-      '*-GTicket* : Ouvre un ticket d\'assistance pour contacter un modérateur du serveur. ' + 
+      '*-Ticket* : Ouvre un ticket d\'assistance pour contacter un modérateur du serveur. ' + 
       '\n' +
       '*-Clear* + nombre : Supprime le nombre de message que vous souhaitez dans le channel.' + 
       '\n' +
@@ -157,8 +183,8 @@ bot.on('message', function (message){
       '\n \n' + 
       '__Commandes pour le **FUN** :__' +
       '\n \n' +
-      '*-Tcheaze* / *NathanG* / *Gofi* : Surprise :)' + 
-      '');
+      '*-Tcheaze* / *NathanG* / *Gofi* / *Axeeel* / *Keke* / *Fio* / *Griffon* / *Laura* / *Ttoki* : Surprise :)' 
+      );
     }
   }
 
@@ -186,7 +212,7 @@ bot.on('message', function (message){
       '\n \n' + */
       '__Commandes à propos **DU SERVEUR** :__' + 
       '\n \n' +
-      '*-GTicket* : Ouvre un ticket d\'assistance pour contacter un modérateur du serveur. ' + 
+      '*-Ticket* : Ouvre un ticket d\'assistance pour contacter un modérateur du serveur. ' + 
       '\n' +
       '*-Stats* : Donne des infos au sujet du serveur (nombre de membres, membres connectés...).' +
       '\n' + 
@@ -198,7 +224,7 @@ bot.on('message', function (message){
       '\n \n' + 
       '__Commandes pour le **FUN** :__' +
       '\n \n' +
-      '*-Tcheaze* / *NathanG* / *Gofi* : Surprise :)' + 
+      '*-Tcheaze* / *NathanG* / *Gofi* / *Axeeel* / *Keke* / *Fio* / *Griffon* / *Laura* / *Ttoki* : Surprise :)' + 
     '');
     }
   }
@@ -215,7 +241,7 @@ bot.on('message', message => {
   .setThumbnail(message.author.displayAvatarURL())
     .setTitle('Ticket 🎫') 
   .addFields(
-    { name: 'Bonjour' , value: `Le staff sera bientot à vous.`},
+    { name: 'Bonjour' , value: `Un membre du staff va venir vous aider.`},
     //{ name: '\u200B', value: '\u200B' },
     { name: '🔒 Pour fermer le ticket,', value: 'contactez un administrateur.'},
     )
@@ -231,6 +257,10 @@ bot.on('message', message => {
       SEND_MESSAGES: false,
       VIEW_CHANNEL: false,
     })
+    /*chan.updateOverwrite(message.guild.roles.******, {
+      SEND_MESSAGES: true,
+      VIEW_CHANNEL: true,
+    })*/
     chan.updateOverwrite(message.author.id ,{ 
       SEND_MESSAGES: true,
       VIEW_CHANNEL: true,
@@ -450,19 +480,4 @@ function play(guild, song) {
   serverQueue.textChannel.send(`Son joué : **${song.title}**`);
 }
 
-
-
-
-
-
-/*     ATTENTION, A 10 LIGNES DU TOKEN DU BOT      */
-/*     ATTENTION, A 9 LIGNES DU TOKEN DU BOT      */
-/*     ATTENTION, A 8 LIGNES DU TOKEN DU BOT      */
-/*     ATTENTION, A 7 LIGNES DU TOKEN DU BOT      */
-/*     ATTENTION, A 6 LIGNES DU TOKEN DU BOT      */
-/*     ATTENTION, A 5 LIGNES DU TOKEN DU BOT      */
-/*     ATTENTION, A 4 LIGNES DU TOKEN DU BOT      */
-/*     ATTENTION, A 3 LIGNES DU TOKEN DU BOT      */
-/*     ATTENTION, A 2 LIGNES DU TOKEN DU BOT      */
-/*     ATTENTION, A 1 LIGNE DU TOKEN DU BOT      */
-bot.login('NzM1MTQwOTQxMTMxNjc3ODI3.Xxb8fw.71cYhJcL37Vl_iQA_VMUawUAQ00');
+bot.login(token.token);
