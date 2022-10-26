@@ -1,3 +1,7 @@
+/**
+PREVOIR LE NON NUMERIQUE GSUPP
+PAUSE LEAVE QUEUE MUSIQUE BOT
+**/
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 const moment = require('moment');
@@ -27,6 +31,10 @@ bot.on('message', function (message){
   if (message.content.startsWith("GEtatB") || message.content.startsWith("GetatB") || message.content.startsWith("Getatb") || message.content.startsWith("GEtatb")) { //Statut du bot
     message.channel.send('Je suis opérationnel :-)');
   }
+
+  if(message.content.startsWith("GTwitch") || message.content.startsWith("Gtwitch")) {
+    message.channel.send('Tiens gros bg là : https://www.twitch.tv/griffon_winky (dédi à Chaos au passage)');
+  }
   
   if (message.content.startsWith("GNomS") || message.content.startsWith("GnomS") || message.content.startsWith("Gnoms") || message.content.startsWith("gNoms")) { //Affiche le nom du serveur
     message.channel.send('Le nom du serveur actuel est  : ' + message.guild.name);
@@ -55,7 +63,7 @@ bot.on('message', function (message){
   message.channel.send(embed).then(message => message.delete({ timeout : 900000 }));
   }
 
-  if (message.content.startsWith("GStats") || message.content.startsWith("Gstats")) { //DONNE LES STATS DU SERVEUR
+  if (message.content.startsWith("GStatS") || message.content.startsWith("GstatS")) { //DONNE LES STATS DU SERVEUR
       let onlines = message.guild.members.cache.filter(({
           presence
       }) => presence.status !== 'offline').size;
@@ -90,12 +98,65 @@ bot.on('message', function (message){
 
   /*********************************************************************************************************************************************************************** */
 
-  if (message.content.startsWith("GTcheaze") || message.content.startsWith("Gtcheaze")) { //FUN
-    message.channel.send('Tcheaze à juste été littéralement plus de fois absent en PPE que casper ');
-    message.react('👻')
-  }
+  /*****************************************
+  ** COMMANDE D'HELP DES COMMANDES DISPO ***
+  ******************************************/
+      if(message.content.startsWith("GHelp") || message.content.startsWith("Ghelp")) {
+        if (message.member.hasPermission('MANAGE_MESSAGES')){
+          var user = message.user
+          const ticketMod = new Discord.MessageEmbed()
+          
+          .setColor('#FF9B00')
+          .setThumbnail(message.author.displayAvatarURL())
+          .setTitle('Liste des commandes disponibles pour toi') 
+          .addFields(
+            { name: '🤖 __Relatif au bot__' , value: `**GEtatB :** T\'informe sur l\'état actuel du bot. \n **GTest :** Le bot doit te répondre (sinon, il est HS).`},
+            { name: ' ╔═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╗ ' , value: ` **╚═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╝** `},
+            { name: '**NOUVEAU** 🎵 __Relatif à la musique__ ' , value: `**GPlay + url YOUTUBE :** Lis une musique youtube dans ton salon vocal`},
+            { name: ' ╔═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╗ ' , value: ` **╚═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╝** `},
+            //{ name: '\u200B', value: '\u200B' },
+            { name: '🔒 __Relatif au serveur actuel et à la modération__', value: '**GBan + @utilisateur + temps (sec) + raison :** Bannis un membre du serveur pendant un temps donné. \n **GClear + nombre :** Supprime le nombre de messages que vous souhaitez dans le channel. \n **GNomS :** Donne le nom du serveur actuel. \n **GStatS :** Donne des infos à propos du serveur actuel. \n **GTicket :** Ouvre un ticket d\'assistance pour contacter les modérateurs du serveur.'},
+            { name: ' ╔═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╗ ' , value: ` **╚═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╝** `},
+            { name: '👤 __Relatif à un utilisateur__' , value: `**GInfos + @utilisateur :** Donne des infos au sujet du compte Discord d\'un membre.`},
+            { name: ' ╔═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╗ ' , value: ` **╚═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╝** `},
+            { name: 'ᕙ༼*◕_◕*༽ᕤ __Commandes fun__' , value: `**GTwitch** \n **GNathanG** \n **GGofi** \n **GKeke** \n **GGriffon** \n **GMassaï** \n **GChaos** \n **GPsgalpha** \n **GHakura**`},
+            )
+          .setDescription(`Demandé par ${message.author}`)
+            .setTimestamp()
+            .setFooter('Développé par Griffon #9999');
 
+          message.channel.send(ticketMod)
+        }
+        else{
+          var user = message.user
+          const ticket = new Discord.MessageEmbed()
+          .setColor('#FF9B00')
+          .setThumbnail(message.author.displayAvatarURL())
+          .setTitle('Liste des commandes disponibles pour toi') 
+          .addFields(
+            { name: '🤖 __Relatif au bot__' , value: `**GEtatB :** T\'informe sur l\'état actuel du bot. \n **GTest :** Le bot doit te répondre (sinon, il est HS).`},
+            //{ name: '\u200B', value: '\u200B' },
+            { name: ' ╔═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╗ ' , value: ` **╚═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╝** `},
+            { name: ' ╔═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╗ ' , value: ` **╚═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╝** `},
+            { name: '**NOUVEAU** 🎵 __Relatif à la musique__' , value: `**GPlay + url YOUTUBE :** Lis une musique youtube dans ton salon vocal`},
+            { name: ' ╔═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╗ ' , value: ` **╚═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╝** `},
+            { name: '🔒 __Relatif au serveur actuel__', value: '**GNomS :** Donne le nom du serveur actuel. \n **GStatS :** Donne des infos à propos du serveur actuel. \n **GTicket :** Ouvre un ticket d\'assistance pour contacter les modérateurs du serveur.'},
+            { name: ' ╔═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╗ ' , value: ` **╚═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╝** `},
+            { name: '👤 __Relatif à un utilisateur__' , value: `**GInfos + @utilisateur :** Donne des infos au sujet du compte Discord d\'un membre.`},
+            { name: ' ╔═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╗ ' , value: ` **╚═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╝** `},
+            { name: 'ᕙ༼*◕_◕*༽ᕤ __Commandes fun__' , value: `**GTwitch** \n **GNathanG** \n **GGofi** \n **GKeke** \n **GGriffon** \n **GMassaï** \n **GChaos** \n **GPsgalpha** \n **GHakura**`},
+            )
+          .setDescription(`Demandé par ${message.author}`)
+            .setTimestamp()
+            .setFooter('Développé par Griffon #9999');
 
+          message.channel.send(ticket)
+        }
+      }
+
+  /*****************************************
+  ************* COMMANDES FUN **************
+  ******************************************/
   if (message.content.startsWith("GNathanG") || message.content.startsWith("GNathang") || message.content.startsWith("GnathanG") || message.content.startsWith("Gnathang")) { //FUN
     message.channel.send('De toute évidence, NathanG est un bg');
     message.react('🥵');
@@ -103,133 +164,35 @@ bot.on('message', function (message){
     message.react('💯');
   }
 
-
-  if (message.content.startsWith("GGofi") || message.content.startsWith("Ggofi")) { //FUN
+  if (message.content.startsWith("GGofi") || message.content.startsWith("Ggofi")) {
     message.channel.send('OOOOHHH LUUUUUIIIII');
     message.react('😆');
   }
 
-  if (message.content.startsWith("GAxeeel") || message.content.startsWith("Gaxeeel") || message.content.startsWith("Gaxel") || message.content.startsWith("GAxel")) {
-    message.channel.send('Axeeel l\'amour de ma vie');
-    message.react('💯');
-  }
-
-  if (message.content.startsWith("GFio") || message.content.startsWith("Gfio")) {
-    message.channel.send('Fio c\'est tout simplement le S');
-    message.react('🥵');
-    message.react('🔥');
-    message.react('💯');
-  }
-
   if (message.content.startsWith("GGriffon") || message.content.startsWith("Ggriffon")) {
-    message.channel.send('"Griffon partout, même dans ton trou');
+    message.channel.send('"Griffon partout, même dans ton trou"');
   }
 
   if (message.content.startsWith("GPsgalpha") || message.content.startsWith("Gpsgalpha")) {
     message.channel.send('Marié avec un bescherelle, ils ont eu ensemble un enfant claquette');
   }
 
-
   if (message.content.startsWith("GKeke") || message.content.startsWith("Gkeke")) {
-    message.channel.send('Muet comme une carpe, con comme un glan');
+    message.channel.send('Muet comme une carpe, con comme un gland');
   }
 
-  if (message.content.startsWith("GLaura") || message.content.startsWith("Glaura")) {
-    message.channel.send('Notre mamie adorée... mais surtout... Ques\'tu veux que j\'fais ?!!');
-    message.react('🥵');
+  if (message.content.startsWith("GChaos") || message.content.startsWith("Gchaos")) {
+    message.channel.send('Un plombier qui poste des vidéos drôles sur le Discord ಠ ͜ʖ ಠ');
   }
 
-  if (message.content.startsWith("GTtoki") || message.content.startsWith("Gttoki")) {
-    message.channel.send('Talkie-walkie est demandée à l\'acceuil, sa maman la cherche.');
-    message.react('🥵');
+  if (message.content.startsWith("GMassaï") || message.content.startsWith("Gmassaï")) {
+    message.channel.send('Le M c\'est le S motherfuck !');
   }
 
-  if (message.content.startsWith("GHelp") || message.content.startsWith("Ghelp")) { //HELP DE TOUTES LES COMMANDES
-    if (message.member.hasPermission('MANAGE_MESSAGES')){
-      message.reply('\n \n' + 
-      '__**Utilise le préfixe : G puis à la suite le nom de ta commande :**__' +
-      '\n \n' + 
-      '__Commandes à propos **DU BOT** :__ ' +
-      '\n \n' +
-      '*-Test* : Le bot doit te répondre (si c\'est pas le cas, c\'est la douille).' + 
-      '\n' + 
-      '*-EtatB* : Informe sur l\'état du bot.' + 
-      '\n \n' +
-      /*'__Commandes à propos **DE LA MUSIQUE** :__' + 
-      '\n \n' +
-      '*-Play* + url : Joue le titre demandé.' + 
-      '\n' + 
-      '*-Pause* : Met en pause la musique / Reprends la lecture.' +
-      '\n' +
-      '*-Skip* : Saute le titre joué pour passer au suivant.' +
-      '\n' +
-      '*-Stop* : Arrête la musique et déconnecte le bot.' +
-      '\n \n' + */
-      '__Commandes à propos **DU SERVEUR** ET DE **LA MODÉRATION** :__' + 
-      '\n \n' +
-      '*-Ticket* : Ouvre un ticket d\'assistance pour contacter un modérateur du serveur. ' + 
-      '\n' +
-      '*-Clear* + nombre : Supprime le nombre de message que vous souhaitez dans le channel.' + 
-      '\n' +
-      '*-Ban* + *utilisateur* + *temps (sec)* + *raison* : Bannis un membre du serveur pendant un certain temps.' +
-      '\n' +
-      '*-Stats* : Donne des infos au sujet du serveur (nombre de membres, membres connectés...).' +
-      '\n' + 
-      '*-NomS* : Donne le nom du serveur actuel.' + 
-      '\n \n' +
-      '__Commandes à propos **D\'UN MEMBRE** :__' + 
-      '\n \n' +
-      '*-Infos* + *@MentionUtilisateur* : Donne des infos au sujet d\'un membre par un message éphémère (15 minutes). ' +
-      '\n \n' + 
-      '__Commandes pour le **FUN** :__' +
-      '\n \n' +
-      '*-Tcheaze* / *NathanG* / *Gofi* / *Axeeel* / *Keke* / *Fio* / *Griffon* / *Laura* / *Ttoki* : Surprise :)' 
-      );
-    }
-  }
-
-
-  if (message.content.startsWith("GHelp") || message.content.startsWith("Ghelp")) { //HELP DE TOUTES LES COMMANDES
-    if (!message.member.hasPermission('MANAGE_MESSAGES')){
-      message.reply('\n \n' + 
-      '__**Utilise le préfixe : G puis à la suite le nom de ta commande :**__' +
-      '\n \n' + 
-      '__Commandes à propos **DU BOT** :__ ' +
-      '\n \n' +
-      '*-Test* : Le bot doit te répondre (si c\'est pas le cas, c\'est la douille).' + 
-      '\n' + 
-      '*-EtatB* : Informe sur l\'état du bot.' + 
-      '\n \n' +
-    /*  '__Commandes à propos **DE LA MUSIQUE** :__' + 
-      '\n \n' +
-      '*-Play* + url : Joue le titre demandé.' + 
-      '\n' + 
-      '*-Pause* : Met en pause la musique / Reprends la lecture.' +
-      '\n' +
-      '*-Skip* : Saute le titre joué pour passer au suivant.' +
-      '\n' +
-      '*-Stop* : Arrête la musique et déconnecte le bot.' +
-      '\n \n' + */
-      '__Commandes à propos **DU SERVEUR** :__' + 
-      '\n \n' +
-      '*-Ticket* : Ouvre un ticket d\'assistance pour contacter un modérateur du serveur. ' + 
-      '\n' +
-      '*-Stats* : Donne des infos au sujet du serveur (nombre de membres, membres connectés...).' +
-      '\n' + 
-      '*-NomS* : Donne le nom du serveur actuel.' + 
-      '\n \n' +
-      '__Commandes à propos **D\'UN MEMBRE** :__' + 
-        '\n \n' +
-        '*-Infos* + *@MentionUtilisateur* : Donne des infos au sujet d\'un membre par un message éphémère (15 minutes). ' +
-      '\n \n' + 
-      '__Commandes pour le **FUN** :__' +
-      '\n \n' +
-      '*-Tcheaze* / *NathanG* / *Gofi* / *Axeeel* / *Keke* / *Fio* / *Griffon* / *Laura* / *Ttoki* : Surprise :)' + 
-    '');
-    }
+  if (message.content.startsWith("GHakura") || message.content.startsWith("Ghakura")) {
+    message.channel.send('(｡♥‿♥｡) Mon amouuur (｡♥‿♥｡) ');
   }
 });
-
   /*****************************************
   ***** SYSTEME DE TICKET D'ASSISTANCE *****
   ******************************************/
@@ -239,7 +202,7 @@ bot.on('message', message => {
   const ticket = new Discord.MessageEmbed()
   .setColor('#FF9B00')
   .setThumbnail(message.author.displayAvatarURL())
-    .setTitle('Ticket 🎫') 
+  .setTitle('Ticket 🎫') 
   .addFields(
     { name: 'Bonjour' , value: `Un membre du staff va venir vous aider.`},
     //{ name: '\u200B', value: '\u200B' },
@@ -276,7 +239,7 @@ bot.on('message', message => {
   /*****************************************
   *********** COMMANDE DE CLEAR  ***********
   ******************************************/
-
+ //PREVOIR QUAND CEST PAS UN NOMBRE
 bot.on("message", async message => {
   let args = message.content.trim().split(" ").slice(1);
   if (message.content.startsWith(`GClear`) || message.content.startsWith("Gclear")) {
@@ -288,7 +251,7 @@ bot.on("message", async message => {
     message.channel.send(`Vous bien supprimé le nombre de message(s) demandé`).then(msg => {
       setTimeout(() => {
         msg.delete()
-      }, 5000);
+      });
     });
   }
 });
@@ -339,145 +302,39 @@ bot.on("message", async message => {
   *********** COMMANDES MUSIQUES ***********
   ******************************************/
 
-const ytdl = require("ytdl-core");
-const queue = new Map();
-bot.on("message", async message => {
-  let commande = message.content.trim().split(" ")[0].slice(1)
-  if (message.author.bot) return;
+  const ytdl = require('ytdl-core');
 
-  const serverQueue = queue.get(message.guild.id);
-  if (message.content.startsWith(`GPlay`)) { //COMMANDE PLAY  
-    execute(message, serverQueue);
-    return;
-  } 
+  bot.on("message", async message => {
+    if (message.content.startsWith("GPlay") || message.content.startsWith("Gplay")){
+      if(message.member.voice.channel){
+        message.member.voice.channel.join().then(connection => {
+          let args = message.content.split(" ");
+          
+          if(!args[1]){
+            message.reply("Lien de la vidéo non ou mal mentionée");
+            connection.disconnect();
+          }
+          else{
+          let dispatcher = connection.play(ytdl(args[1], { quality: "highestaudio", highWaterMark: 1 << 25}));
 
+          dispatcher.on("finish", () =>{
+            dispatcher.destroy();
+            connection.disconnect();
+          });
 
-  else if (message.content.startsWith(`GSkip`)) { //COMMANDE SKIP
-    skip(message, serverQueue);
-    return;
-  } 
-
-
-  else if (message.content.startsWith(`GStop`)) { //COMMANDE STOP
-    stop(message, serverQueue);
-    return;
-  } 
-
-
-  else if (message.content.startsWith(`GPause`)) { //COMMANDE PAUSE
-    pause(message, serverQueue);
-    return;
-  }
-});
-
-
-  /*****************************************
-  ******** FONCTIONS UTILISABLES ***********
-  ******************************************/
-
-async function execute(message, serverQueue) {
-  const args = message.content.split(" ");
-  const voiceChannel = message.member.voice.channel;
-  if (!voiceChannel){
-    return message.channel.send(
-      "Tu dois être connecté à un salon vocal pour jouer une musique !"
-    );
-  }
-  const permissions = voiceChannel.permissionsFor(message.client.user);
-  if (!permissions.has("CONNECT") || !permissions.has("SPEAK")) {
-    return message.channel.send(
-      "J'ai besoin d'avoir la permission de rejoindre et de parler dans le salon !"
-    );
-  }
-
-  const songInfo = await ytdl.getInfo(args[1]);
-  const song = {
-    title: songInfo.title,
-    url: songInfo.video_url
-  };
-
-  if (!serverQueue) {
-    const queueContruct = {
-      textChannel: message.channel,
-      voiceChannel: voiceChannel,
-      connection: null,
-      songs: [],
-      volume: 5,
-      playing: true
-    };
-
-    queue.set(message.guild.id, queueContruct);
-    queueContruct.songs.push(song);
-
-    try {
-      var connection = await voiceChannel.join();
-      queueContruct.connection = connection;
-      play(message.guild, queueContruct.songs[0]);
-    } catch (err) {
-      console.log(err);
-      queue.delete(message.guild.id);
-      return message.channel.send(err);
+          dispatcher.on("error", err =>{
+            console.log("erreur de dispatcher : " + err)
+          })
+        }
+        }).catch(err =>{
+          message.reply("Erreur lors de la connexion" +err);
+        })
+      }
+      else {
+        message.reply("Connecte toi à un salon vocal avant de me lancer STP !")
+      }
     }
-  } else {
-    serverQueue.songs.push(song);
-    return message.channel.send(`${song.title} a été ajouté à la liste en cours !`);
-  }
-}
 
-function skip(message, serverQueue) {
-  if (!message.member.voice.channel) {
-    return message.channel.send(
-      "Tu dois être connecté au salon pour skip la musique !"
-    )};
-  if (!serverQueue){
-    return message.channel.send(
-      "Il n'y a pas de chanson à skip !"
-    )};
-  //serverQueue.connection.dispatcher.end();
-}
-
-
-function stop(message, serverQueue) {
-  if (!message.member.voice.channel)
-    return message.channel.send(
-      "Tu dois être connecté au salon pour stopper la musique !"
-  );
-  serverQueue.songs = [];
-  serverQueue.connection.dispatcher.end();
-}
-
-
-function pause(message, serverQueue) {
-  if (!message.member.voice.channel) {
-    return message.channel.send(
-      "Tu dois être connecté au salon pour mettre en pause la musique !"
-  )};
-  if (serverQueue.connection.dispatcher.paused) {
-    serverQueue.connection.dispatcher.resume();
-  } else {
-    serverQueue.songs = [];
-    serverQueue.connection.dispatcher.pause();
-  }
-}
-
-
-function play(guild, song) {
-  const serverQueue = queue.get(guild.id);
-  if (!song) {
-    serverQueue.voiceChannel.leave();
-    queue.delete(guild.id);
-    return;
-  }
-
-  const dispatcher = serverQueue.connection
-  .play(ytdl(song.url))
-  .on("finish", () => {
-    serverQueue.songs.shift();
-    play(guild, serverQueue.songs[0]);
-  })
-  .on("error", error => console.error(error));
-  dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-  serverQueue.textChannel.send(`Son joué : **${song.title}**`);
-}
+  });
 
 bot.login(token.token);
