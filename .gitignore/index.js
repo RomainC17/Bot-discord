@@ -1,6 +1,5 @@
 /**
-PREVOIR LE NON NUMERIQUE GSUPP
-PAUSE LEAVE QUEUE MUSIQUE BOT
+PAUSEMUSIQUE BOT
 **/
 const Discord = require('discord.js');
 const bot = new Discord.Client();
@@ -112,7 +111,7 @@ bot.on('message', function (message){
           .addFields(
             { name: '🤖 __Relatif au bot__' , value: `**GEtatB :** T\'informe sur l\'état actuel du bot. \n **GTest :** Le bot doit te répondre (sinon, il est HS).`},
             { name: ' ╔═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╗ ' , value: ` **╚═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╝** `},
-            { name: '**NOUVEAU** 🎵 __Relatif à la musique__ ' , value: `**GPlay + url YOUTUBE :** Lis une musique youtube dans ton salon vocal`},
+            { name: '**NOUVEAU** 🎵 __Relatif à la musique__ ' , value: `**GPlay + url YOUTUBE :** Lis une musique youtube dans ton salon vocal. \n **GWaitlist :** Liste les musiques qui sont en file d'attente. \n **GStop :** Déconnecte le bot et vide la liste d'attente.`},
             { name: ' ╔═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╗ ' , value: ` **╚═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╝** `},
             //{ name: '\u200B', value: '\u200B' },
             { name: '🔒 __Relatif au serveur actuel et à la modération__', value: '**GBan + @utilisateur + temps (sec) + raison :** Bannis un membre du serveur pendant un temps donné. \n **GClear + nombre :** Supprime le nombre de messages que vous souhaitez dans le channel. \n **GNomS :** Donne le nom du serveur actuel. \n **GStatS :** Donne des infos à propos du serveur actuel. \n **GTicket :** Ouvre un ticket d\'assistance pour contacter les modérateurs du serveur.'},
@@ -138,7 +137,7 @@ bot.on('message', function (message){
             //{ name: '\u200B', value: '\u200B' },
             { name: ' ╔═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╗ ' , value: ` **╚═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╝** `},
             { name: ' ╔═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╗ ' , value: ` **╚═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╝** `},
-            { name: '**NOUVEAU** 🎵 __Relatif à la musique__' , value: `**GPlay + url YOUTUBE :** Lis une musique youtube dans ton salon vocal`},
+            { name: '**NOUVEAU** 🎵 __Relatif à la musique__' , value: `**GPlay + url YOUTUBE :** Lis une musique youtube dans ton salon vocal. \n **GWaitlist :** Liste les musiques qui sont en file d'attente. \n **GStop :** Déconnecte le bot et vide la liste d'attente.`},
             { name: ' ╔═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╗ ' , value: ` **╚═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╝** `},
             { name: '🔒 __Relatif au serveur actuel__', value: '**GNomS :** Donne le nom du serveur actuel. \n **GStatS :** Donne des infos à propos du serveur actuel. \n **GTicket :** Ouvre un ticket d\'assistance pour contacter les modérateurs du serveur.'},
             { name: ' ╔═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╗ ' , value: ` **╚═════════ஓ๑♡๑ஓ═ஓ๑♡๑ஓ════════╝** `},
@@ -239,12 +238,12 @@ bot.on('message', message => {
   /*****************************************
   *********** COMMANDE DE CLEAR  ***********
   ******************************************/
- //PREVOIR QUAND CEST PAS UN NOMBRE
 bot.on("message", async message => {
   let args = message.content.trim().split(" ").slice(1);
   if (message.content.startsWith(`GClear`) || message.content.startsWith("Gclear")) {
     if (!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send("Vous n'avez pas les permissions");
     if (!args[0]) return message.channel.send("Vous devez mettre un nombre de messages à supprimer");
+    if (isNaN(args[0])) return message.channel.send("Merci de rentrer un nombre *(ex : GClear 20)*");
     //if (isNan(args[0])) return message.channel.send("Le nombre de message est invalide");
     if (parseInt(args[0]) <= 0 || parseInt(args[0]) >= 99) return message.channel.send("Le nombre de messages à supprimer doit être compris entre 1 et 99.")
     message.channel.bulkDelete(parseInt(args[0]) + 1)
@@ -303,38 +302,98 @@ bot.on("message", async message => {
   ******************************************/
 
   const ytdl = require('ytdl-core');
+  const { duration } = require('moment');
+  const client = new Discord.Client();
 
+  list = [];
   bot.on("message", async message => {
-    if (message.content.startsWith("GPlay") || message.content.startsWith("Gplay")){
-      if(message.member.voice.channel){
-        message.member.voice.channel.join().then(connection => {
-          let args = message.content.split(" ");
-          
-          if(!args[1]){
-            message.reply("Lien de la vidéo non ou mal mentionée");
-            connection.disconnect();
-          }
-          else{
-          let dispatcher = connection.play(ytdl(args[1], { quality: "highestaudio", highWaterMark: 1 << 25}));
 
-          dispatcher.on("finish", () =>{
-            dispatcher.destroy();
-            connection.disconnect();
-          });
-
-          dispatcher.on("error", err =>{
-            console.log("erreur de dispatcher : " + err)
-          })
-        }
-        }).catch(err =>{
-          message.reply("Erreur lors de la connexion" +err);
-        })
+    if(message.content.startsWith("GWaitlist") || message.content.startsWith("Gwaitlist")){
+      let msg = "**File d'attente** \n";
+      for(var i = 1; i < list.length ; i++){
+        let titleVid;
+        let durationVid;
+        let minutesVid;
+        let secondesVid;
+        let artistNameVid;
+        let getInfo = await ytdl.getBasicInfo(list[i]);
+        
+        
+        titleVid = getInfo.videoDetails.title;
+        artistNameVid = getInfo.videoDetails.author.name;
+  
+        durationVid = getInfo.videoDetails.lengthSeconds;
+        minutesVid = Math.floor(durationVid / 60);
+        secondesVid = durationVid - minutesVid * 60;
+        
+  
+        msg += '*' + i + ".* " + titleVid + " - " + artistNameVid + " ; durée : " + minutesVid + ":" + secondesVid + " min." +'\n';
       }
-      else {
-        message.reply("Connecte toi à un salon vocal avant de me lancer STP !")
-      }
+      message.channel.send(msg);
     }
 
+    if(message.content.startsWith("GStop") || message.content.startsWith("Gstop")){
+      message.member.voice.channel.leave();
+      list.splice(0, list.length);
+    }
+
+    if(message.content.startsWith("GSkip") || message.content.startsWith("Gskip")){      
+      list.shift();
+      dispatcher.destroy(); //??? Inaccessible 
+    }
+
+    if(message.content.startsWith("GPlay") || message.content.startsWith("Gplay")){
+      if(message.member.voice.channel){
+        let args = message.content.split(" ");
+
+        if(args[1] == undefined || !args[1].startsWith("https://www.youtube.com/watch?v=")){
+          message.reply("Lien de la vidéo incorrect");
+        }
+        else {
+          if(list.length > 0){
+            list.push(args[1]);
+            message.reply("Vidéo ajoutée à la liste !")
+          }
+          else {
+            list.push(args[1]);
+            message.reply("Vidéo ajoutée à la liste !")
+
+            message.member.voice.channel.join().then(connection => {
+
+              playMusic(connection);
+
+              connection.on("disconnect", () =>{
+                list = [];
+              })
+            }).catch(err =>{
+              message.reply("Erreur lors de la connexion : " + err);
+            })
+          }
+        }
+      }
+    }
+});
+
+function playMusic(connection){
+  const dispatcher = connection.play(ytdl(list[0], { quality: "highestaudio", highWaterMark: 1 << 25}));
+  
+  dispatcher.on("finish", () =>{ //Quand la musique est finie
+    list.shift();                //On supprime l'occurence en cours
+    dispatcher.destroy();
+
+    if(list.length > 0){         //Si il reste une musique dans la file d'attente
+      playMusic(connection);     //On recommence
+    }
+    else{
+      connection.disconnect();   //Sinon on déconnecte
+    }
   });
+
+  dispatcher.on("error", err => {
+    console.log("Erreur de dispatcher : " + err);
+    dispatcher.destroy();
+    connection.disconnect();
+  })
+}
 
 bot.login(token.token);
