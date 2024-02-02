@@ -171,26 +171,6 @@ bot.on('message', function (message){
   if (message.content.startsWith("GGriffon") || message.content.startsWith("Ggriffon")) {
     message.channel.send('"Griffon partout, même dans ton trou"');
   }
-
-  if (message.content.startsWith("GPsgalpha") || message.content.startsWith("Gpsgalpha")) {
-    message.channel.send('Marié avec un bescherelle, ils ont eu ensemble un enfant claquette');
-  }
-
-  if (message.content.startsWith("GKeke") || message.content.startsWith("Gkeke")) {
-    message.channel.send('Muet comme une carpe, con comme un gland');
-  }
-
-  if (message.content.startsWith("GChaos") || message.content.startsWith("Gchaos")) {
-    message.channel.send('Un plombier qui poste des vidéos drôles sur le Discord ಠ ͜ʖ ಠ');
-  }
-
-  if (message.content.startsWith("GMassaï") || message.content.startsWith("Gmassaï")) {
-    message.channel.send('Le M c\'est le S motherfuck !');
-  }
-
-  if (message.content.startsWith("GHakura") || message.content.startsWith("Ghakura")) {
-    message.channel.send('(｡♥‿♥｡) Mon amouuur (｡♥‿♥｡) ');
-  }
 });
   /*****************************************
   ***** SYSTEME DE TICKET D'ASSISTANCE *****
